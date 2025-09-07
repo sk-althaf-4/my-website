@@ -4,6 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Secret Message Prank</title>
+  <script>
+  // Get the button
+  const startBtn = document.getElementById("StartBtn");
+
+  // Add click event
+  startBtn.addEventListener("click", function() {
+    if (navigator.vibrate) {
+      // Vibrate pattern: 200ms, pause 100ms, vibrate 200ms
+      navigator.vibrate([200, 100, 200]);
+    } else {
+      console.log("Vibration API not supported on this device");
+    }
+  });
+</script>
   <style>
     body {
       margin: 0;
@@ -197,4 +211,5 @@
   </script>
 </body>
 </html>
+
 
