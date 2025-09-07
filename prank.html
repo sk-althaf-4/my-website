@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Secret Message Prank</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #000;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 600px;
+      text-align: center;
+      padding: 20px;
+    }
+    h2 {
+      margin-bottom: 12px;
+      color: #ffffff;
+    }
+    p {
+      margin-bottom: 20px;
+      color: #cccccc;
+    }
+    .btn {
+      background: #2f6cf6;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      display: inline-block;
+    }
+    .btn:hover {
+      background: #1c4adf;
+    }
+
+    /* screen2 elements */
+    #screen2 { display: none; }
+    .bar {
+      height: 14px;
+      background: #111;
+      border: 1px solid #444;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 15px 0;
+    }
+    .bar span {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: #00ff00;
+    }
+    .log {
+      height: 250px;
+      background: #000;
+      border: 1px solid #222;
+      border-radius: 8px;
+      overflow: auto;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 14px;
+      color: #00ff00;
+      text-align: left;
+    }
+    .shake { animation: shake .1s infinite; }
+    .flash { animation: flash 0.6s alternate infinite; }
+
+    @keyframes shake {
+      0% { transform: translate(1px, 1px); }
+      25% { transform: translate(-1px, -2px); }
+      50% { transform: translate(-3px, 0); }
+      75% { transform: translate(3px, 2px); }
+      100% { transform: translate(1px, -1px); }
+    }
+    @keyframes flash {
+      0% { color: #ff0000; }
+      100% { color: #00ff00; }
+    }
+
+    /* Fullscreen hacked overlay */
+    #hackedOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 999;
+      display: none;
+    }
+    #hackedOverlay h1 {
+      font-size: 3.5rem;
+      text-align: center;
+      color: #ff0000;
+      text-shadow: 0 0 10px #ff0000, 0 0 20px #ff3333, 0 0 40px #ff0000;
+      animation: glitch 1s infinite, shake 0.1s infinite;
+    }
+
+    /* Glitch flicker effect */
+    @keyframes glitch {
+      0% { opacity: 1; }
+      20% { opacity: 0.8; transform: skewX(5deg); }
+      40% { opacity: 1; transform: skewX(-5deg); }
+      60% { opacity: 0.7; }
+      80% { opacity: 1; }
+      100% { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Screen 1 -->
+    <div id="screen1">
+      <h2>Share your secret msg with althaf</h2>
+      <p>Tap below here to enter your secret msg</p>
+      <button id="startBtn" class="btn">type here...</button>
+    </div>
+
+    <!-- Screen 2 -->
+    <div id="screen2">
+      <h2 class="shake flash">Installing malware hack files</h2>
+      <div class="bar"><span id="barFill"></span></div>
+      <div id="binaryArea" class="log shake"></div>
+    </div>
+  </div>
+
+  <!-- Fullscreen hacked overlay -->
+  <div id="hackedOverlay">
+    <h1>Your Instagram account was hacked</h1>
+  </div>
+
+  <!-- Sound -->
+  <audio id="alarmSound" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" loop></audio>
+
+  <script>
+    const screen1 = document.getElementById('screen1');
+    const screen2 = document.getElementById('screen2');
+    const startBtn = document.getElementById('startBtn');
+    const barFill = document.getElementById('barFill');
+    const binaryArea = document.getElementById('binaryArea');
+    const hackedOverlay = document.getElementById('hackedOverlay');
+    const alarmSound = document.getElementById('alarmSound');
+    let progress = 0;
+
+    function randomBinaryRow(width) {
+      let s = '';
+      for (let i = 0; i < width; i++) s += Math.random() > 0.5 ? '1' : '0';
+      return s;
+    }
+
+    function startBinary() {
+      setInterval(() => {
+        const div = document.createElement('div');
+        div.textContent = randomBinaryRow(70);
+        binaryArea.appendChild(div);
+        binaryArea.scrollTop = binaryArea.scrollHeight;
+        if (binaryArea.children.length > 150) {
+          binaryArea.removeChild(binaryArea.firstChild);
+        }
+      }, 35);
+    }
+
+    function startProgress() {
+      const interval = setInterval(() => {
+        progress += 5;
+        if (progress > 100) progress = 100;
+        barFill.style.width = progress + '%';
+        if (progress === 100) {
+          clearInterval(interval);
+          setTimeout(() => {
+            hackedOverlay.style.display = 'flex';
+          }, 800);
+        }
+      }, 180);
+    }
+
+    startBtn.addEventListener('click', () => {
+      screen1.style.display = 'none';
+      screen2.style.display = 'block';
+      startBinary();
+      startProgress();
+      alarmSound.play();
+      if ('vibrate' in navigator) navigator.vibrate([200, 100, 200, 100, 400, 100, 600]);
+    });
+  </script>
+</body>
+</html>
